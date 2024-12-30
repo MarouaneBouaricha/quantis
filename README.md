@@ -1,4 +1,4 @@
-# The Blockchain Qauantis
+# The Blockchain Quantis
 A basic peer-to-peer distributed ledger in the attemp of creating a blockchain from scratch.
 
 ## Installation
