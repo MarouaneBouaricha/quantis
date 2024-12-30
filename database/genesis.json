@@ -1,0 +1,7 @@
+{
+  "genesis_time": "2024-12-30T00:00:00.000000000Z",
+  "chain_id": "the-blockchain-quantis-ledger",
+  "balances": {
+    "marouane": 1000000
+  }
+}
