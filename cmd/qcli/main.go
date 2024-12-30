@@ -4,8 +4,11 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/MarouaneBouaricha/quantis/fs"
 	"github.com/spf13/cobra"
 )
+
+const flagDataDir = "datadir"
 
 func main() {
 	var qCmd = &cobra.Command{
@@ -16,10 +19,26 @@ func main() {
 	}
 
 	qCmd.AddCommand(versionCmd)
+	qCmd.AddCommand(balancesCmd())
 
 	err := qCmd.Execute()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+}
+
+func addDefaultRequiredFlags(cmd *cobra.Command) {
+	cmd.Flags().String(flagDataDir, "", "Absolute path to the node data dir where the DB will/is stored")
+	cmd.MarkFlagRequired(flagDataDir)
+}
+
+func getDataDirFromCmd(cmd *cobra.Command) string {
+	dataDir, _ := cmd.Flags().GetString(flagDataDir)
+
+	return fs.ExpandPath(dataDir)
+}
+
+func incorrectUsageErr() error {
+	return fmt.Errorf("incorrect usage")
 }
