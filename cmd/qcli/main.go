@@ -22,6 +22,7 @@ func main() {
 
 	qCmd.AddCommand(versionCmd)
 	qCmd.AddCommand(balancesCmd())
+	qCmd.AddCommand(runCmd())
 
 	err := qCmd.Execute()
 	if err != nil {

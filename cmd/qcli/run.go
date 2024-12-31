@@ -11,12 +11,12 @@ import (
 func runCmd() *cobra.Command {
 	var runCmd = &cobra.Command{
 		Use:   "run",
-		Short: "Launches the TBB node and its HTTP API.",
+		Short: "Launches the Quantis node and its HTTP API.",
 		Run: func(cmd *cobra.Command, args []string) {
 			ip, _ := cmd.Flags().GetString(flagIP)
 			port, _ := cmd.Flags().GetUint64(flagPort)
 
-			fmt.Println("Launching TBB node and its HTTP API...")
+			fmt.Println("Launching Quantis node and its HTTP API...")
 
 			bootstrap := node.NewPeerNode(
 				"127.0.0.1",

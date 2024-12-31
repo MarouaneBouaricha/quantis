@@ -19,7 +19,7 @@ Available Commands:
   balances    Interact with balances (list...).
   completion  Generate the autocompletion script for the specified shell
   help        Help about any command
-  run         Launches the TBB node and its HTTP API.
+  run         Launches the Quantis node and its HTTP API.
   version     Describes version.
 
 Flags:
