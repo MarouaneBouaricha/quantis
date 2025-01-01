@@ -1,5 +1,5 @@
 # The Blockchain Quantis
-A basic peer-to-peer distributed ledger in the attemp of creating a blockchain from scratch.
+A basic peer-to-peer distributed ledger in the attempt of creating a blockchain from scratch.
 
 ## Installation
 ```shell
@@ -27,3 +27,6 @@ Flags:
 
 Use "qcli [command] --help" for more information about a command.
 ```
+
+## Mining
+A Proof of Work algorithm is implemented when creating new blocks and the account who mined block get a 100 unit as reward.
