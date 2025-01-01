@@ -23,9 +23,6 @@ jobs:
     - name: Go vendor
       run: |
         go mod vendor
-        go mod download
-        go generate ./...
-        git diff
     - name: Run GoReleaser
       uses: goreleaser/goreleaser-action@v6
       with:

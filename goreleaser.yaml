@@ -1,7 +1,7 @@
 version: 2
 builds:
   - binary: qcli
-    main: ./cmd/...
+    main: ./cmd/
     goos:
       - linux
       - windows
