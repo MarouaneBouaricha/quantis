@@ -23,10 +23,10 @@ jobs:
     - name: Go vendor
       run: go mod vendor
     - name: Run GoReleaser
-      uses: goreleaser/goreleaser-action@v5.0.0
+      uses: goreleaser/goreleaser-action@v6
       with:
         distribution: goreleaser
-        version: ${{ env.GITHUB_REF_NAME }}
+        version: '~> v2'
         args: release --clean
         workdir: "./"
       env:
