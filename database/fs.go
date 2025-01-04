@@ -1,11 +1,12 @@
 package database
 
 import (
+	"io/ioutil"
 	"os"
 	"path/filepath"
 )
 
-func initDataDirIfNotExists(dataDir string) error {
+func InitDataDirIfNotExists(dataDir string, genesis []byte) error {
 	if fileExist(getGenesisJsonFilePath(dataDir)) {
 		return nil
 	}
@@ -14,7 +15,7 @@ func initDataDirIfNotExists(dataDir string) error {
 		return err
 	}
 
-	if err := writeGenesisToDisk(getGenesisJsonFilePath(dataDir)); err != nil {
+	if err := writeGenesisToDisk(getGenesisJsonFilePath(dataDir), genesis); err != nil {
 		return err
 	}
 
@@ -59,5 +60,5 @@ func dirExists(path string) (bool, error) {
 }
 
 func writeEmptyBlocksDbToDisk(path string) error {
-	return os.WriteFile(path, []byte(""), os.ModePerm)
+	return ioutil.WriteFile(path, []byte(""), os.ModePerm)
 }

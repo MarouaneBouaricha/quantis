@@ -6,6 +6,8 @@ import (
 	"strconv"
 
 	"github.com/MarouaneBouaricha/quantis/database"
+	"github.com/MarouaneBouaricha/quantis/wallet"
+	"github.com/ethereum/go-ethereum/common"
 )
 
 type ErrRes struct {
@@ -13,15 +15,16 @@ type ErrRes struct {
 }
 
 type BalancesRes struct {
-	Hash     database.Hash             `json:"block_hash"`
-	Balances map[database.Account]uint `json:"balances"`
+	Hash     database.Hash           `json:"block_hash"`
+	Balances map[common.Address]uint `json:"balances"`
 }
 
 type TxAddReq struct {
-	From  string `json:"from"`
-	To    string `json:"to"`
-	Value uint   `json:"value"`
-	Data  string `json:"data"`
+	From    string `json:"from"`
+	FromPwd string `json:"from_pwd"`
+	To      string `json:"to"`
+	Value   uint   `json:"value"`
+	Data    string `json:"data"`
 }
 
 type TxAddRes struct {
@@ -32,7 +35,7 @@ type StatusRes struct {
 	Hash       database.Hash       `json:"block_hash"`
 	Number     uint64              `json:"block_number"`
 	KnownPeers map[string]PeerNode `json:"peers_known"`
-	PendingTXs []database.Tx       `json:"pending_txs"`
+	PendingTXs []database.SignedTx `json:"pending_txs"`
 }
 
 type SyncRes struct {
@@ -56,8 +59,28 @@ func txAddHandler(w http.ResponseWriter, r *http.Request, node *Node) {
 		return
 	}
 
-	tx := database.NewTx(database.NewAccount(req.From), database.NewAccount(req.To), req.Value, req.Data)
-	err = node.AddPendingTX(tx, node.info)
+	from := database.NewAccount(req.From)
+
+	if from.String() == common.HexToAddress("").String() {
+		writeErrRes(w, fmt.Errorf("%s is an invalid 'from' sender", from.String()))
+		return
+	}
+
+	if req.FromPwd == "" {
+		writeErrRes(w, fmt.Errorf("password to decrypt the %s account is required. 'from_pwd' is empty", from.String()))
+		return
+	}
+
+	nonce := node.state.GetNextAccountNonce(from)
+	tx := database.NewTx(from, database.NewAccount(req.To), req.Value, nonce, req.Data)
+
+	signedTx, err := wallet.SignTxWithKeystoreAccount(tx, from, req.FromPwd, wallet.GetKeystoreDirPath(node.dataDir))
+	if err != nil {
+		writeErrRes(w, err)
+		return
+	}
+
+	err = node.AddPendingTX(signedTx, node.info)
 	if err != nil {
 		writeErrRes(w, err)
 		return

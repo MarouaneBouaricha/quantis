@@ -8,17 +8,18 @@ import (
 
 	"github.com/MarouaneBouaricha/quantis/database"
 	"github.com/MarouaneBouaricha/quantis/fs"
+	"github.com/ethereum/go-ethereum/common"
 )
 
 type PendingBlock struct {
 	parent database.Hash
 	number uint64
 	time   uint64
-	miner  database.Account
-	txs    []database.Tx
+	miner  common.Address
+	txs    []database.SignedTx
 }
 
-func NewPendingBlock(parent database.Hash, number uint64, miner database.Account, txs []database.Tx) PendingBlock {
+func NewPendingBlock(parent database.Hash, number uint64, miner common.Address, txs []database.SignedTx) PendingBlock {
 	return PendingBlock{parent, number, uint64(time.Now().Unix()), miner, txs}
 }
 
@@ -62,7 +63,7 @@ func Mine(ctx context.Context, pb PendingBlock) (database.Block, error) {
 	fmt.Printf("\tHeight: '%v'\n", block.Header.Number)
 	fmt.Printf("\tNonce: '%v'\n", block.Header.Nonce)
 	fmt.Printf("\tCreated: '%v'\n", block.Header.Time)
-	fmt.Printf("\tMiner: '%v'\n", block.Header.Miner)
+	fmt.Printf("\tMiner: '%v'\n", block.Header.Miner.String())
 	fmt.Printf("\tParent: '%v'\n\n", block.Header.Parent.Hex())
 
 	fmt.Printf("\tAttempt: '%v'\n", attempt)
