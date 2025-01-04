@@ -8,10 +8,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const flagKeystoreFile = "keystore"
 const flagDataDir = "datadir"
 const flagMiner = "miner"
 const flagIP = "ip"
 const flagPort = "port"
+const flagBootstrapAcc = "bootstrap-account"
+const flagBootstrapIp = "bootstrap-ip"
+const flagBootstrapPort = "bootstrap-port"
 
 func main() {
 	var qCmd = &cobra.Command{
@@ -23,6 +27,7 @@ func main() {
 
 	qCmd.AddCommand(versionCmd)
 	qCmd.AddCommand(balancesCmd())
+	qCmd.AddCommand(walletCmd())
 	qCmd.AddCommand(runCmd())
 
 	err := qCmd.Execute()
@@ -35,6 +40,11 @@ func main() {
 func addDefaultRequiredFlags(cmd *cobra.Command) {
 	cmd.Flags().String(flagDataDir, "", "Absolute path to the node data dir where the DB will/is stored")
 	cmd.MarkFlagRequired(flagDataDir)
+}
+
+func addKeystoreFlag(cmd *cobra.Command) {
+	cmd.Flags().String(flagKeystoreFile, "", "Absolute path to the encrypted keystore file")
+	cmd.MarkFlagRequired(flagKeystoreFile)
 }
 
 func getDataDirFromCmd(cmd *cobra.Command) string {
