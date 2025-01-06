@@ -21,6 +21,7 @@ Available Commands:
   help        Help about any command
   run         Launches the Quantis node and its HTTP API.
   version     Describes version.
+  wallet      Manages blockchain accounts and keys.
 
 Flags:
   -h, --help   help for qcli
@@ -29,4 +30,4 @@ Use "qcli [command] --help" for more information about a command.
 ```
 
 ## Mining
-A Proof of Work algorithm is implemented when creating new blocks and the account who mined block get a 100 unit as reward.
+A Proof of Work algorithm is implemented when creating new blocks and the account who mined the new block get a 100 unit as reward.
